@@ -4,6 +4,7 @@ import pinoHttp from 'pino-http';
 import { config } from './config/env';
 import logger from './config/logger';
 import { errorHandler } from './middleware/errorHandler';
+import userRoutes from './routes/user.routes';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -13,6 +14,9 @@ app.use(pinoHttp({ logger }));
 
 // Body parser
 app.use(express.json());
+
+// Routes
+app.use('/api/users', userRoutes);
 
 // Health check route
 app.get("/health", (_req, res) => {
