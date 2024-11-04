@@ -1,5 +1,7 @@
+import 'dotenv/config';
 import express, { Express } from "express";
 import pinoHttp from 'pino-http';
+import { config } from './config/env';
 import logger from './config/logger';
 import { errorHandler } from './middleware/errorHandler';
 
@@ -14,12 +16,7 @@ app.use(express.json());
 
 // Health check route
 app.get("/health", (_req, res) => {
-  res.status(200).json({ status: "ok" });
-});
-
-// Test error route
-app.get('/error', () => {
-  throw new Error('Test error');
+  res.status(200).json({ status: "ok", environment: config.nodeEnv });
 });
 
 // Error handling middleware (should be last)
