@@ -7,6 +7,7 @@ import { errorHandler } from './middleware/errorHandler';
 // import userRoutes from './routes/user.routes';
 import authRoutes from './routes/auth.routes';
 import { AppError } from './utils/errors';
+import userRoutes from './routes/user.routes';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -29,6 +30,7 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Health check route
 app.get('/health', (_req, res) => {

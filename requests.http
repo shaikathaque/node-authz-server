@@ -34,16 +34,6 @@ Content-Type: application/json
     "password": "123"
 }
 
-
-### Login successful
-POST http://localhost:3000/api/auth/login
-Content-Type: application/json
-
-{
-    "email": "test@example.com",
-    "password": "password123"
-}
-
 ### Login with wrong password (should fail)
 POST http://localhost:3000/api/auth/login
 Content-Type: application/json
@@ -61,3 +51,23 @@ Content-Type: application/json
     "email": "nonexistent@example.com",
     "password": "password123"
 }
+
+### Successful Login and get token
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "password123"
+}
+
+### Get profile (protected route)
+GET http://localhost:3000/api/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3YWNlMmFlMy1hMGM5LTQ4NzYtOWRkOC04OTNkMzA2MDkxZjYiLCJpYXQiOjE3MzA3MTU0MjIsImV4cCI6MTczMDcxOTAyMn0.HgG-aMC0nyFEKhuDYbsXITXAVqA6tmROc0ylBuh0HZY
+
+### Test invalid token
+GET http://localhost:3000/api/users/profile
+Authorization: Bearer invalid_token
+
+### Test missing token
+GET http://localhost:3000/api/users/profile
