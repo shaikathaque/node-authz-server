@@ -7,10 +7,10 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "lint": "eslint . --max-warnings=0",
+    "lint:check": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format:check": "prettier --check src/**/*.ts",
-    "format:write": "prettier --write .prettierrc"
+    "format:fix": "prettier --write .prettierrc"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",

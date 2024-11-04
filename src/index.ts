@@ -11,9 +11,6 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "ok" });
 });
 
-const test = "hi";
-const a = 1;
-
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
