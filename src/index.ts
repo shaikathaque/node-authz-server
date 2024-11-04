@@ -1,16 +1,17 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
+import logger from './config/logger';
 
 const app: Express = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Basic middleware for parsing JSON payloads
 app.use(express.json());
 
 // Health check route
-app.get("/health", (req: Request, res: Response) => {
+app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
 app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  logger.info(`Server is running on port ${port}`);
 });

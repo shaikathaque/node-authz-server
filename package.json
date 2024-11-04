@@ -10,12 +10,13 @@
     "lint:check": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format:check": "prettier --check src/**/*.ts",
-    "format:fix": "prettier --write .prettierrc"
+    "format:write": "prettier --write .prettierrc"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
     "@types/express": "^5.0.0",
     "@types/node": "^22.8.7",
+    "@types/pino": "^7.0.5",
     "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
@@ -27,6 +28,8 @@
     "typescript-eslint": "^8.12.2"
   },
   "dependencies": {
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "pino": "^9.5.0",
+    "pino-pretty": "^11.3.0"
   }
 }

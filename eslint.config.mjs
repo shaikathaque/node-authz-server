@@ -15,11 +15,5 @@ export default [
       "@typescript-eslint": tseslint.plugin,
     },
   },
-  {
-    rules: {
-      "@typescript-eslint/explicit-function-return-type": "error",
-      "no-console": "warn",
-    }
-  },
   prettier,
 ];
