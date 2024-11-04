@@ -1,9 +1,16 @@
-const message: string = "TypeScript setup is working!";
-console.log(message);
+import express, { Express, Request, Response } from 'express';
 
-// Test that TypeScript compilation is working with a simple function
-function add(a: number, b: number): number {
-    return a + b;
-}
+const app: Express = express();
+const port = 3000;
 
-console.log(add(5, 4));
+// Basic middleware for parsing JSON payloads
+app.use(express.json());
+
+// Health check route
+app.get('/health', (req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok' });
+});
+
+app.listen(port, () => {
+    console.log(`[server]: Server is running at http://localhost:${port}`);
+});
