@@ -16,4 +16,7 @@ export default [
     },
   },
   prettier,
+  {
+    ignores: ["dist/*", "node_modules/*"],
+  },
 ];

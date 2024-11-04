@@ -1,10 +1,12 @@
 import 'dotenv/config';
-import express, { Express } from 'express';
+import express, { Express, Request, Response, NextFunction } from 'express';
 import pinoHttp from 'pino-http';
 import { config } from './config/env';
 import logger from './config/logger';
 import { errorHandler } from './middleware/errorHandler';
-import userRoutes from './routes/user.routes';
+// import userRoutes from './routes/user.routes';
+import authRoutes from './routes/auth.routes';
+import { AppError } from './utils/errors';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -15,12 +17,27 @@ app.use(pinoHttp({ logger }));
 // Body parser
 app.use(express.json());
 
+// Debug middleware
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  logger.debug('Incoming request:', {
+    url: req.url,
+    method: req.method,
+    body: req.body,
+  });
+  next();
+});
+
 // Routes
-app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 // Health check route
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'ok', environment: config.nodeEnv });
+});
+
+// 404 handler - place this after all valid routes
+app.use((_req: Request, _res: Response, next: NextFunction) => {
+  next(new AppError(404, 'Route not found'));
 });
 
 // Error handling middleware (should be last)
