@@ -1,0 +1,23 @@
+@baseUrl = http://localhost:3000/api
+@authToken = {{login.response.body.token}}
+
+### Login as user
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "password123"
+}
+
+### Get user profile
+GET {{baseUrl}}/users/profile
+Authorization: Bearer {{authToken}}
+
+### Get profile with invalid token
+GET {{baseUrl}}/users/profile
+Authorization: Bearer invalid_token
+
+### Get profile without token
+GET {{baseUrl}}/users/profile

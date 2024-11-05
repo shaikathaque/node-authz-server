@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3000/api
+@adminToken = {{adminLogin.response.body.token}}
+
+
+### Register admin user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "admin123"
+}
+
+### Login as admin
+# @name adminLogin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "admin123"
+}
+
+### Get all users (admin only)
+GET {{baseUrl}}/admin/users
+Authorization: Bearer {{adminToken}}
+
+### Delete user (admin only)
+DELETE {{baseUrl}}/admin/users/USER_ID
+Authorization: Bearer {{adminToken}}

@@ -29,7 +29,16 @@ export async function register(email: string, password: string) {
 }
 
 export async function login(email: string, password: string) {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: {
+      id: true,
+      email: true,
+      password: true,
+      role: true,
+      createdAt: true,
+    },
+  });
   if (!user) {
     throw new AuthError('Invalid credentials');
   }
@@ -39,10 +48,13 @@ export async function login(email: string, password: string) {
     throw new AuthError('Invalid credentials');
   }
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'fallback-secret', {
-    expiresIn: '1h',
-  });
+  const token = jwt.sign(
+    { userId: user.id, role: user.role },
+    process.env.JWT_SECRET || 'fallback-secret',
+    {
+      expiresIn: '1h',
+    },
+  );
 
-  logger.info(`User logged in: ${user.email}`);
   return { token };
 }
