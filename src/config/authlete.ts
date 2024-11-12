@@ -1,6 +1,4 @@
-import logger from "./logger";
-
-const AUTHLETE_BASE_URL = 'https://api.authlete.com';
+const AUTHLETE_BASE_URL = 'https://us.authlete.com/api';
 
 interface AuthleteConfig {
   apiKey: string;
@@ -17,30 +15,56 @@ class AuthleteClient {
   }
 
   private async request(endpoint: string, options: RequestInit = {}) {
-    const url = `${AUTHLETE_BASE_URL}${endpoint}`;
+    const url = `${AUTHLETE_BASE_URL}/${this.apiKey}${endpoint}`;
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Basic ${Buffer.from(`${this.apiKey}:${this.accessToken}`).toString('base64')}`
+      Authorization: `Bearer ${this.accessToken}`,
     };
 
     try {
+      console.log('Making request to:', url); // Temporary console.log for immediate feedback
+      console.log('Request details:', {
+        method: options.method,
+        headers: {
+          'Content-Type': headers['Content-Type'],
+          Authorization: '***hidden***',
+        },
+        body: options.body,
+      });
+
       const response = await fetch(url, {
         ...options,
-        headers: {
-          ...headers,
-          ...options.headers
-        }
+        headers: headers,
+      });
+
+      const responseText = await response.text();
+      console.log('Response received:', {
+        status: response.status,
+        headers: Object.fromEntries(response.headers.entries()),
+        text: responseText,
       });
 
       if (!response.ok) {
-        throw new Error(`Authlete API error: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Authlete API error: ${response.status} ${response.statusText}\nResponse: ${responseText}`,
+        );
       }
 
-      return await response.json();
+      return responseText ? JSON.parse(responseText) : null;
     } catch (error) {
-      logger.error('Authlete request failed:', error);
+      console.error('Request failed:', error);
       throw error;
     }
+  }
+
+  async authorizationRequest(parameters: {
+    parameters: string; // The entire query string from the authorization request
+    clientId?: string;
+  }) {
+    return this.request('/auth/authorization', {
+      method: 'POST',
+      body: JSON.stringify(parameters),
+    });
   }
 }
 
@@ -51,5 +75,5 @@ if (!process.env.AUTHLETE_API_KEY || !process.env.AUTHLETE_ACCESS_TOKEN) {
 
 export const authleteClient = new AuthleteClient({
   apiKey: process.env.AUTHLETE_API_KEY,
-  accessToken: process.env.AUTHLETE_ACCESS_TOKEN
+  accessToken: process.env.AUTHLETE_ACCESS_TOKEN,
 });

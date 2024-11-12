@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.routes';
 import { AppError } from './utils/errors';
 import userRoutes from './routes/user.routes';
 import adminRoutes from './routes/admin.routes';
+import oauthRoutes from './routes/oauth.routes';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -33,6 +34,7 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/oauth', oauthRoutes);
 
 // Health check route
 app.get('/health', (_req, res) => {
